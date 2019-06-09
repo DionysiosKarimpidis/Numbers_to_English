@@ -1,0 +1,97 @@
+import random
+
+__name__ = "main"
+
+def number_to_english(m):
+
+    ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
+    tenp = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen']
+    tenp2 = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety']
+
+    def once(num):
+        word = ''
+        word = ones[int(num)]
+        word = word.strip()
+        return word
+
+    def tens(num):
+        word = ""
+        if num[0] == '1': #10-19
+            word = tenp[int(num[1])]
+        elif num[1] == '0': #20,30,40...90
+            word = tenp2[int(num[0])]
+        else:
+            word = tenp2[int(num[0])] + " " + ones[int(num[1])]
+        return word.strip()
+
+    def hundred(num):
+        word = ""
+        temp_word_hundred = once(num[0])
+        temp_word_tens = tens(num[1:])
+        if num[1:] == "00":
+            word = temp_word_hundred + " " + "hundred"
+        else:
+            word = temp_word_hundred + " " + "hundred" + " and " + temp_word_tens
+        return word.strip()
+
+    def thousend(num):
+        word = ""
+        temp_word_thousend = once(num[0])
+        temp_word_hundred = hundred(num[1:])
+        if num[1:] == "000":
+            word = temp_word_thousend + " " + "thousend"
+        else:
+            word = temp_word_thousend + " " + "thousend" + " " + temp_word_hundred
+        return word.strip()
+
+    def thousend_2(num):
+        word = ""
+        temp_word_thousend_2 = tens(num[:2])
+        temp_word_hunded = hundred(num[2:])
+        if num[2:] == "000":
+            word = temp_word_thousend_2 + " " + "thousend "
+        else:
+            word = temp_word_thousend_2 + " " + "thousend " + temp_word_hunded
+        return word.strip()
+
+    def thousend_3(num):
+        word = ""
+        temp_word_thousend_3 = hundred(num[:3])
+        temp_word_hunded = hundred(num[3:])
+        if num[3:] == "000":
+            word = temp_word_thousend_3 + " " + "thousend"
+        else:
+            word = temp_word_thousend_3 + " " + "thousend " + temp_word_hunded
+        return word.strip()
+
+
+    str_num = str(m)
+    #-------- one digit----------
+    if len(str_num) == 1:
+        if str_num == '0':
+            return 'zero'
+        else:
+            return once(str_num)
+    # ------- 2 digits ---------
+    elif len(str_num) == 2:
+        return tens(str_num)
+    # ------- 3 digits ---------
+    elif len(str_num) == 3:
+        return hundred(str_num)
+    # ------- 4 digits ---------
+    elif len(str_num) == 4:
+        return thousend(str_num)
+    # ------- 5 digits ---------
+    elif len(str_num) == 5:
+        return thousend_2(str_num)
+    # ------- 6 digits ---------
+    elif len(str_num) == 6:
+        return thousend_3(str_num)
+    # ------- and so on -------
+
+
+if __name__ == "main":
+    # try 10 different numbers
+    for _ in range(10):
+        m = random.randint(0,999999)
+        ww = print("m is: {}, and m to word: {}".format(m,number_to_english(m)))
